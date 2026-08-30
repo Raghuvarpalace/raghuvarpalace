@@ -1,58 +1,175 @@
-import type { Metadata } from "next";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { hotelConfig } from "@/lib/hotel-config";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "Privacy Policy for the Hotel Raghuvar Residency, Ayodhya website.",
-  alternates: { canonical: "/privacy-policy" },
+import { useEffect, useState } from "react";
+import type { HotelSettings } from "@/lib/types";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
+
+type SettingsForm = {
+  hotel_name: string;
+  address: string;
+  phone: string;
+  whatsapp: string;
+  email: string;
+  google_maps_url: string;
+  description: string;
+  hero_image: string;
+  logo_url: string;
 };
 
-export default function PrivacyPolicyPage() {
+const EMPTY_FORM: SettingsForm = {
+  hotel_name: "",
+  address: "",
+  phone: "",
+  whatsapp: "",
+  email: "",
+  google_maps_url: "",
+  description: "",
+  hero_image: "",
+  logo_url: "",
+};
+
+export default function AdminSettingsPage() {
+  const [form, setForm] = useState<SettingsForm>(EMPTY_FORM);
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/admin/settings");
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        const s: HotelSettings | null = data.settings;
+        if (s) {
+          setForm({
+            hotel_name: s.hotel_name || "",
+            address: s.address || "",
+            phone: s.phone || "",
+            whatsapp: s.whatsapp || "",
+            email: s.email || "",
+            google_maps_url: s.google_maps_url || "",
+            description: s.description || "",
+            hero_image: s.hero_image || "",
+            logo_url: s.logo_url || "",
+          });
+        }
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Could not load settings.");
+      } finally {
+        setLoaded(true);
+      }
+    }
+    load();
+  }, []);
+
+  async function handleSave() {
+    setSaving(true);
+    setError(null);
+    setSaved(false);
+    try {
+      const res = await fetch("/api/admin/settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setSaved(true);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not save settings.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
-    <div className="py-16 md:py-24">
-      <div className="container-px mx-auto max-w-3xl">
-        <SectionHeading eyebrow="Legal" title="Privacy Policy" />
-        <div className="mt-10 space-y-6 text-sm leading-relaxed text-charcoal-soft">
-          <p>
-            This Privacy Policy explains how {hotelConfig.name} (&ldquo;we&rdquo;, &ldquo;us&rdquo;)
-            collects, uses and protects information submitted through this website, including the
-            booking / reservation inquiry form.
-          </p>
-          <section>
-            <h2 className="font-display text-lg text-charcoal">Information We Collect</h2>
-            <p className="mt-2">
-              When you submit a booking inquiry, we collect your name, phone number, email address,
-              stay dates, number of guests/rooms and any special requests you choose to share.
-            </p>
-          </section>
-          <section>
-            <h2 className="font-display text-lg text-charcoal">How We Use Information</h2>
-            <p className="mt-2">
-              Information submitted is used solely to respond to your inquiry, confirm availability,
-              and communicate with you about your stay. We do not sell your information to third parties.
-            </p>
-          </section>
-          <section>
-            <h2 className="font-display text-lg text-charcoal">Data Storage</h2>
-            <p className="mt-2">
-              Booking inquiries are stored securely in our database with access restricted to
-              authorised hotel staff.
-            </p>
-          </section>
-          <section>
-            <h2 className="font-display text-lg text-charcoal">Contact</h2>
-            <p className="mt-2">
-              For questions about this policy or your data, please contact us using the details on
-              our Contact page.
-            </p>
-          </section>
-          <p className="text-xs text-charcoal-soft/70">
-            This is a template policy. Please have it reviewed by a qualified professional before
-            publishing, and update it to reflect your hotel&rsquo;s actual data practices.
-          </p>
+    <div className="max-w-2xl">
+      <h1 className="font-display text-2xl text-maroon">Hotel settings</h1>
+      <p className="mt-1 text-sm text-charcoal-soft">
+        Note: these values are stored in Supabase. The live site currently reads phone /
+        WhatsApp / email from environment variables (see <code>.env.example</code>) so the
+        buttons keep working exactly as before. If you&rsquo;d like the website to read
+        these from here instead, that&rsquo;s a small follow-up change to{" "}
+        <code>src/lib/hotel-config.ts</code>.
+      </p>
+
+      {!loaded && <p className="mt-6 text-sm text-charcoal-soft">Loading…</p>}
+      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+
+      {loaded && (
+        <div className="mt-6 rounded-2xl border border-stone bg-white p-6 space-y-4">
+          <ImageUploadField
+            label="Site logo (shown in the header and footer)"
+            value={form.logo_url}
+            onChange={(url) => setForm((f) => ({ ...f, logo_url: url }))}
+          />
+          <ImageUploadField
+            label="Homepage banner photo (shown behind the main title)"
+            value={form.hero_image}
+            onChange={(url) => setForm((f) => ({ ...f, hero_image: url }))}
+          />
+          <Field label="Hotel name">
+            <input className="input" value={form.hotel_name} onChange={(e) => setForm((f) => ({ ...f, hotel_name: e.target.value }))} />
+          </Field>
+          <Field label="Address">
+            <textarea className="input min-h-20" value={form.address} onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))} />
+          </Field>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Phone (e.g. +919876543210)">
+              <input className="input" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
+            </Field>
+            <Field label="WhatsApp (digits + country code, e.g. 919876543210)">
+              <input className="input" value={form.whatsapp} onChange={(e) => setForm((f) => ({ ...f, whatsapp: e.target.value }))} />
+            </Field>
+          </div>
+          <Field label="Email">
+            <input className="input" type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
+          </Field>
+          <Field label="Google Maps share link (optional)">
+            <input className="input" value={form.google_maps_url} onChange={(e) => setForm((f) => ({ ...f, google_maps_url: e.target.value }))} />
+          </Field>
+          <Field label="Description">
+            <textarea className="input min-h-20" value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} />
+          </Field>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="rounded-full bg-maroon px-5 py-2.5 text-sm font-label font-medium text-ivory hover:bg-maroon-deep disabled:opacity-60"
+            >
+              {saving ? "Saving…" : "Save settings"}
+            </button>
+            {saved && <span className="text-sm text-emerald-700">Saved.</span>}
+          </div>
         </div>
-      </div>
+      )}
+
+      <style jsx>{`
+        .input {
+          width: 100%;
+          border: 1px solid var(--color-stone);
+          border-radius: 0.5rem;
+          padding: 0.6rem 0.9rem;
+          font-size: 0.875rem;
+          color: var(--color-charcoal);
+        }
+        .input:focus {
+          outline: none;
+          border-color: var(--color-maroon);
+        }
+      `}</style>
     </div>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      <span className="block text-xs font-label text-charcoal-soft mb-1">{label}</span>
+      {children}
+    </label>
   );
 }
