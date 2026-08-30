@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { requireAdminSupabase } from "@/lib/admin-api-helpers";
@@ -41,6 +40,7 @@ export async function PATCH(request: Request) {
     "google_maps_url",
     "description",
     "hero_image",
+    "logo_url",
   ] as const) {
     if (body[key] !== undefined) updates[key] = body[key];
   }
