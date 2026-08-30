@@ -4,8 +4,9 @@ import {
   demoHotelSettings,
   demoRooms,
   demoTestimonials,
+  ayodhyaAttractions,
 } from "./demo-data";
-import type { GalleryItem, HotelSettings, Room, Testimonial } from "./types";
+import type { Attraction, GalleryItem, HotelSettings, Room, Testimonial } from "./types";
 
 /**
  * All data-fetching for the public site lives here. Each function tries
@@ -94,4 +95,19 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   return data as Testimonial[];
 }
 
+export async function getAttractions(): Promise<{ items: Attraction[]; isDemo: boolean }> {
+  const supabase = getSupabaseServerClient();
+  if (!supabase) return { items: ayodhyaAttractions, isDemo: true };
+
+  const { data, error } = await supabase
+    .from("attractions")
+    .select("*")
+    .eq("is_active", true)
+    .order("sort_order", { ascending: true });
+
+  if (error || !data || data.length === 0) {
+    return { items: ayodhyaAttractions, isDemo: true };
+  }
+  return { items: data as Attraction[], isDemo: false };
+}
 
