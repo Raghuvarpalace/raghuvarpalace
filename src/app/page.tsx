@@ -1,11 +1,10 @@
-
 import { Hero } from "@/components/home/Hero";
 import { Highlights } from "@/components/home/Highlights";
 import { RoomsPreview } from "@/components/home/RoomsPreview";
 import { AyodhyaExperience } from "@/components/home/AyodhyaExperience";
 import { Testimonials } from "@/components/home/Testimonials";
 import { LocationSection } from "@/components/location/LocationSection";
-import { getRooms, getTestimonials, getHotelSettings } from "@/lib/data";
+import { getRooms, getTestimonials, getHotelSettings, getAttractions } from "@/lib/data";
 
 // Without this, the homepage would be rendered once at build time and
 // never pick up new rooms/testimonials/hero image added later from the
@@ -15,10 +14,11 @@ import { getRooms, getTestimonials, getHotelSettings } from "@/lib/data";
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const [{ rooms }, testimonials, hotelSettings] = await Promise.all([
+  const [{ rooms }, testimonials, hotelSettings, { items: attractions }] = await Promise.all([
     getRooms(),
     getTestimonials(),
     getHotelSettings(),
+    getAttractions(),
   ]);
 
   return (
@@ -26,7 +26,7 @@ export default async function HomePage() {
       <Hero heroImage={hotelSettings.hero_image} />
       <Highlights />
       <RoomsPreview rooms={rooms} />
-      <AyodhyaExperience />
+      <AyodhyaExperience attractions={attractions} />
       <LocationSection />
       <Testimonials testimonials={testimonials} />
     </>
