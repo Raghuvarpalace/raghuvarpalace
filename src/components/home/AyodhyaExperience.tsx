@@ -1,10 +1,9 @@
-
 import Link from "next/link";
-import { ayodhyaAttractions } from "@/lib/demo-data";
+import type { Attraction } from "@/lib/types";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ImageFallback } from "@/components/ui/ImageFallback";
 
-export function AyodhyaExperience() {
+export function AyodhyaExperience({ attractions }: { attractions: Attraction[] }) {
   return (
     <section className="py-20 md:py-28 bg-maroon-deep text-ivory">
       <div className="container-px mx-auto max-w-7xl">
@@ -16,10 +15,10 @@ export function AyodhyaExperience() {
         />
 
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {ayodhyaAttractions.map((place) => (
+          {attractions.map((place) => (
             <div key={place.name} className="rounded-2xl overflow-hidden bg-white/5 border border-ivory/10">
               <div className="h-36">
-                <ImageFallback src={null} alt={place.name} label={place.name} className="h-full w-full" />
+                <ImageFallback src={place.image_url} alt={place.name} label={place.name} className="h-full w-full" />
               </div>
               <div className="p-5">
                 <h3 className="font-display text-base text-gold-soft">{place.name}</h3>
