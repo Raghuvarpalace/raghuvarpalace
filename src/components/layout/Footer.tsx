@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { hotelConfig, isEmailConfigured, isPhoneConfigured, getTelHref, getMailHref } from "@/lib/hotel-config";
 
 const EXPLORE_LINKS = [
@@ -16,7 +15,7 @@ const INFO_LINKS = [
   { href: "/terms-and-conditions", label: "Terms & Conditions" },
 ];
 
-export function Footer() {
+export function Footer({ logoUrl }: { logoUrl?: string | null }) {
   const telHref = getTelHref();
   const mailHref = getMailHref();
 
@@ -25,7 +24,9 @@ export function Footer() {
       <div className="container-px mx-auto max-w-7xl py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div>
           <div className="flex items-center gap-2.5">
-            <Image src="/logo.png" alt="Hotel Raghuvar Residency" width={36} height={36} className="h-9 w-9 rounded-full" />
+            {/* Plain img so an uploaded Supabase logo URL works without next.config allowlisting */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={logoUrl || "/logo.png"} alt="Hotel Raghuvar Residency" width={36} height={36} className="h-9 w-9 rounded-full object-cover" />
             <span className="font-display text-2xl">Hotel Raghuvar Residency</span>
           </div>
           <p className="mt-3 text-sm text-ivory/70 leading-relaxed">{hotelConfig.address}</p>
@@ -91,5 +92,4 @@ export function Footer() {
     </footer>
   );
                                                                  }
-
 
