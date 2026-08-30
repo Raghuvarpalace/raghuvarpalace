@@ -1,8 +1,7 @@
-
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getRoomBySlug, getRooms } from "@/lib/data";
+import { getRoomBySlug, getRooms, getRoomImages } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
 import { RoomGallery } from "@/components/rooms/RoomGallery";
 import { CallButton } from "@/components/ui/CallButton";
@@ -40,6 +39,8 @@ export default async function RoomDetailPage({
 
   if (!room) notFound();
 
+  const images = await getRoomImages(room);
+
   return (
     <div className="py-16 md:py-24">
       <div className="container-px mx-auto max-w-7xl">
@@ -53,7 +54,7 @@ export default async function RoomDetailPage({
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           <div className="lg:col-span-3">
-            <RoomGallery roomName={room.name} images={[]} />
+            <RoomGallery roomName={room.name} images={images} />
           </div>
 
           <div className="lg:col-span-2">
