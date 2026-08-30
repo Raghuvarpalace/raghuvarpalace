@@ -9,6 +9,7 @@ const NAV = [
   { href: "/admin/bookings", label: "Bookings" },
   { href: "/admin/rooms", label: "Rooms" },
   { href: "/admin/gallery", label: "Gallery" },
+  { href: "/admin/attractions", label: "Discover Ayodhya" },
   { href: "/admin/testimonials", label: "Testimonials" },
   { href: "/admin/settings", label: "Settings" },
 ];
@@ -70,5 +71,4 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
     </div>
   );
 }
-
 
