@@ -6,7 +6,7 @@ import {
   demoTestimonials,
   ayodhyaAttractions,
 } from "./demo-data";
-import type { Attraction, GalleryItem, HotelSettings, Room, Testimonial } from "./types";
+import type { Attraction, GalleryItem, HotelSettings, Room, RoomImage, Testimonial } from "./types";
 
 /**
  * All data-fetching for the public site lives here. Each function tries
@@ -50,6 +50,42 @@ export async function getRoomBySlug(
     return { room: demoRooms.find((r) => r.slug === slug) ?? null, isDemo: true };
   }
   return { room: data as Room, isDemo: false };
+}
+
+/**
+ * A room's full photo gallery (from the "room images" section in the
+ * admin panel). If none have been added yet, falls back to just the
+ * room's single featured image so the detail page still shows a photo
+ * instead of "Image coming soon" whenever a featured image exists.
+ */
+export async function getRoomImages(room: Room): Promise<RoomImage[]> {
+  const supabase = getSupabaseServerClient();
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("room_images")
+      .select("*")
+      .eq("room_id", room.id)
+      .order("sort_order", { ascending: true });
+
+    if (!error && data && data.length > 0) {
+      return data as RoomImage[];
+    }
+  }
+
+  if (room.featured_image) {
+    return [
+      {
+        id: "featured",
+        room_id: room.id,
+        image_url: room.featured_image,
+        alt_text: room.name,
+        sort_order: 0,
+        created_at: room.created_at,
+      },
+    ];
+  }
+
+  return [];
 }
 
 export async function getGallery(): Promise<{ items: GalleryItem[]; isDemo: boolean }> {
