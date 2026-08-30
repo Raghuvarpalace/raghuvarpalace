@@ -1,4 +1,3 @@
-
 // ────────────────────────────────────────────────────────────────────────
 // DEMO DATA — for local development and as a fallback when Supabase is not
 // yet configured or a table is empty. NONE of this should be mistaken for
@@ -12,7 +11,7 @@
 //     project brief — confirm each one with the hotel owner before launch.
 // ────────────────────────────────────────────────────────────────────────
 
-import type { GalleryItem, HotelSettings, Room, Testimonial } from "./types";
+import type { Attraction, GalleryItem, HotelSettings, Room, Testimonial } from "./types";
 import { hotelConfig } from "./hotel-config";
 
 export const demoHotelSettings: HotelSettings = {
@@ -26,6 +25,7 @@ export const demoHotelSettings: HotelSettings = {
   description:
     "A premium and comfortable stay in Ayodhya for pilgrims, families, couples, tourists and business travellers.",
   hero_image: null,
+  logo_url: null,
   updated_at: new Date().toISOString(),
 };
 
@@ -108,27 +108,42 @@ export const demoGallery: GalleryItem[] = [
 // shares real, verifiable guest feedback.
 export const demoTestimonials: Testimonial[] = [];
 
-export interface Attraction {
-  name: string;
-  description: string;
-}
-
 // Distances/travel times are intentionally omitted — do not invent them.
 export const ayodhyaAttractions: Attraction[] = [
   {
+    id: "demo-a1",
     name: "Shri Ram Janmabhoomi",
     description: "One of Ayodhya's most significant spiritual landmarks.",
+    image_url: null,
+    sort_order: 1,
+    is_active: true,
+    created_at: new Date().toISOString(),
   },
   {
+    id: "demo-a2",
     name: "Hanuman Garhi",
     description: "A prominent temple and a common stop for visiting pilgrims.",
+    image_url: null,
+    sort_order: 2,
+    is_active: true,
+    created_at: new Date().toISOString(),
   },
   {
+    id: "demo-a3",
     name: "Saryu River / Saryu Ghat",
     description: "The ghats along the Saryu are central to Ayodhya's spiritual life.",
+    image_url: null,
+    sort_order: 3,
+    is_active: true,
+    created_at: new Date().toISOString(),
   },
   {
+    id: "demo-a4",
     name: "Kanak Bhawan",
     description: "A temple known for its architecture, popular with visitors.",
+    image_url: null,
+    sort_order: 4,
+    is_active: true,
+    created_at: new Date().toISOString(),
   },
 ];
