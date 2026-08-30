@@ -83,6 +83,23 @@ create table if not exists public.hotel_settings (
 
 -- Safe to re-run even if the table already existed without this column.
 alter table public.hotel_settings add column if not exists hero_image text;
+alter table public.hotel_settings add column if not exists logo_url text;
+
+-- ─────────────────────────────────────────────
+-- attractions ("Discover Ayodhya" cards shown on the homepage and
+-- the Location page)
+-- ─────────────────────────────────────────────
+create table if not exists public.attractions (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null,
+  description text not null default '',
+  image_url  text,
+  sort_order integer not null default 0,
+  is_active  boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists attractions_is_active_idx on public.attractions (is_active);
 
 -- ─────────────────────────────────────────────
 -- gallery
@@ -151,6 +168,7 @@ alter table public.booking_inquiries enable row level security;
 alter table public.hotel_settings enable row level security;
 alter table public.gallery enable row level security;
 alter table public.testimonials enable row level security;
+alter table public.attractions enable row level security;
 
 -- rooms: public can read active rooms only
 drop policy if exists "Public can read active rooms" on public.rooms;
@@ -188,6 +206,12 @@ create policy "Public can read active testimonials"
   on public.testimonials for select
   using (is_active = true);
 
+-- attractions: public can read active items only
+drop policy if exists "Public can read active attractions" on public.attractions;
+create policy "Public can read active attractions"
+  on public.attractions for select
+  using (is_active = true);
+
 -- booking_inquiries: public can INSERT only — never read, update, or delete.
 drop policy if exists "Public can submit booking inquiries" on public.booking_inquiries;
 create policy "Public can submit booking inquiries"
@@ -208,5 +232,4 @@ select
   'Near Sabji Mandi, Sapt Sagar Colony, Ayodhya, Uttar Pradesh, India',
   'A premium and comfortable stay in Ayodhya for pilgrims, families, couples, tourists and business travellers.'
 where not exists (select 1 from public.hotel_settings);
-
 
