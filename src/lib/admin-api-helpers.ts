@@ -25,4 +25,3 @@ export function requireAdminSupabase() {
   return { supabase, errorResponse: null } as const;
 }
 
-
