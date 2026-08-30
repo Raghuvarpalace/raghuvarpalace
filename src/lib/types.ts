@@ -1,4 +1,3 @@
-
 // Shared types for Hotel Raghuvar Residency hotel website.
 // These mirror the Supabase schema defined in supabase/schema.sql
 
@@ -54,7 +53,18 @@ export interface HotelSettings {
   google_maps_url: string | null;
   description: string | null;
   hero_image: string | null;
+  logo_url: string | null;
   updated_at: string;
+}
+
+export interface Attraction {
+  id: string;
+  name: string;
+  description: string;
+  image_url: string | null;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
 }
 
 export interface GalleryItem {
