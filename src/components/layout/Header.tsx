@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -16,7 +15,7 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-export function Header() {
+export function Header({ logoUrl }: { logoUrl?: string | null }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -46,13 +45,14 @@ export function Header() {
     >
       <div className="container-px mx-auto flex h-16 max-w-7xl items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 min-w-0">
-          <Image
-            src="/logo.png"
+          {/* Plain img so an uploaded Supabase logo URL works without next.config allowlisting */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={logoUrl || "/logo.png"}
             alt="Hotel Raghuvar Residency"
             width={40}
             height={40}
-            priority
-            className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-full"
+            className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-full object-cover"
           />
           <span className="flex items-baseline gap-2 min-w-0">
             <span className="font-display text-lg sm:text-xl md:text-2xl text-maroon truncate">
@@ -149,5 +149,4 @@ function CloseIcon() {
     </svg>
   );
 }
-
 
