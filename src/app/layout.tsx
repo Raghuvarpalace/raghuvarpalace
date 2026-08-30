@@ -1,10 +1,10 @@
-
 import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { StickyMobileCta } from "@/components/layout/StickyMobileCta";
 import { hotelConfig } from "@/lib/hotel-config";
+import { getHotelSettings } from "@/lib/data";
 
 const title = "Hotel Raghuvar Residency | Premium Stay in Ayodhya";
 const description =
@@ -56,7 +56,9 @@ const jsonLd = {
   url: hotelConfig.siteUrl,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const hotelSettings = await getHotelSettings();
+
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col pb-16 lg:pb-0">
@@ -64,9 +66,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Header />
+        <Header logoUrl={hotelSettings.logo_url} />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <Footer logoUrl={hotelSettings.logo_url} />
         <StickyMobileCta />
       </body>
     </html>
