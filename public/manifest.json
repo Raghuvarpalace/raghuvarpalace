@@ -1,1 +1,32 @@
 
+{
+  "name": "Hotel Raghuvar Residency, Ayodhya",
+  "short_name": "Raghuvar Residency",
+  "description": "Book your stay at Hotel Raghuvar Residency, a premium hotel in Ayodhya near Ramghat.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f1e6",
+  "theme_color": "#5c1420",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
