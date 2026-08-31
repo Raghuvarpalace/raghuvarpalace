@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { StickyMobileCta } from "@/components/layout/StickyMobileCta";
+import { InstallAppButton } from "@/components/pwa/InstallAppButton";
+import { RegisterServiceWorker } from "@/components/pwa/RegisterServiceWorker";
 import { hotelConfig } from "@/lib/hotel-config";
 import { getHotelSettings } from "@/lib/data";
 
@@ -25,6 +27,11 @@ export const metadata: Metadata = {
     "hotel near Ram Janmabhoomi",
   ],
   alternates: { canonical: "/" },
+  manifest: "/manifest.json",
+  icons: {
+    icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+  },
   openGraph: {
     type: "website",
     title,
@@ -39,6 +46,10 @@ export const metadata: Metadata = {
     description,
   },
   robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#5c1420",
 };
 
 const jsonLd = {
@@ -66,10 +77,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <RegisterServiceWorker />
         <Header logoUrl={hotelSettings.logo_url} />
         <main className="flex-1">{children}</main>
         <Footer logoUrl={hotelSettings.logo_url} />
         <StickyMobileCta />
+        <InstallAppButton />
       </body>
     </html>
   );
