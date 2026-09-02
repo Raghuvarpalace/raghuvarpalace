@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/Hero";
+import { AboutHome } from "@/components/home/AboutHome";
 import { Highlights } from "@/components/home/Highlights";
 import { RoomsPreview } from "@/components/home/RoomsPreview";
 import { AyodhyaExperience } from "@/components/home/AyodhyaExperience";
@@ -24,6 +25,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero heroImage={hotelSettings.hero_image} />
+      <AboutHome />
       <Highlights />
       <RoomsPreview rooms={rooms} />
       <AyodhyaExperience attractions={attractions} />
