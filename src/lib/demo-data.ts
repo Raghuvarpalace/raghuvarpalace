@@ -23,7 +23,7 @@ export const demoHotelSettings: HotelSettings = {
   email: hotelConfig.email || null,
   google_maps_url: hotelConfig.googleMapsUrl || null,
   description:
-    "A premium and comfortable stay in Ayodhya for pilgrims, families, couples, tourists and business travellers.",
+    "A premium and comfortable stay in Ayodhya for pilgrims, families, tourists and business travellers.",
   hero_image: null,
   logo_url: null,
   updated_at: new Date().toISOString(),
@@ -35,9 +35,9 @@ export const demoRooms: Room[] = [
     name: "Deluxe Room",
     slug: "deluxe-room",
     short_description:
-      "A comfortable, well-appointed room suited to couples and solo travellers.",
+      "A comfortable, well-appointed room suited to families and solo travellers.",
     description:
-      "The Deluxe Room offers a restful base for exploring Ayodhya, with thoughtful comforts for an easy stay after a day of sightseeing. Exact configuration and inclusions will be confirmed by the hotel.",
+      "Experience a perfect blend of comfort and convenience. Our rooms are thoughtfully designed with modern interiors, plush bedding, and clean, well-maintained attached bathrooms to ensure a relaxing stay. Premium mattresses and fresh, clean linen make for a restful sleep, in a quiet atmosphere ideal for unwinding after a day of exploring Ayodhya.",
     price: null,
     max_guests: 2,
     bed_type: "1 Double Bed",
@@ -53,7 +53,7 @@ export const demoRooms: Room[] = [
     slug: "super-deluxe-room",
     short_description: "Extra space and comfort, well suited to small families.",
     description:
-      "The Super Deluxe Room is designed for guests who value additional space and comfort during their stay in Ayodhya. Final amenities and layout will be confirmed by the hotel.",
+      "The Super Deluxe Room offers a perfect blend of comfort and convenience, with modern interiors, plush bedding, and a clean, well-maintained attached bathroom. Premium mattresses and fresh linen ensure a restful sleep, while the quiet atmosphere makes it an ideal retreat after a day of exploring Ayodhya.",
     price: null,
     max_guests: 3,
     bed_type: "1 Double Bed + Extra Bed (on request)",
@@ -69,7 +69,7 @@ export const demoRooms: Room[] = [
     slug: "family-room",
     short_description: "A spacious option for families travelling together.",
     description:
-      "The Family Room is intended for guests travelling in a group, offering more room to settle in comfortably. Bedding configuration and exact capacity will be finalised by the hotel.",
+      "The Family Room brings together comfort and convenience for guests travelling as a group, with modern interiors, plush bedding, and a clean, well-maintained attached bathroom. Premium mattresses and fresh linen ensure a restful sleep, in a peaceful, quiet atmosphere perfect for relaxing after a day of exploring Ayodhya.",
     price: null,
     max_guests: 4,
     bed_type: "2 Beds",
