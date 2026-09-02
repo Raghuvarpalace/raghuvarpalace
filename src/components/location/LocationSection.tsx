@@ -2,6 +2,16 @@
 import { getGoogleMapsUrl, hotelConfig } from "@/lib/hotel-config";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
+const NEARBY_PLACES = [
+  { name: "Ram Mandir", distance: "1.5 KM" },
+  { name: "Hanuman Gadhi", distance: "1.5 KM" },
+  { name: "Kanak Bhawan", distance: "1.8 KM" },
+  { name: "Dashrath Mahal", distance: "1.6 KM" },
+  { name: "Lata Chowk / Veena Chowk", distance: "1 KM" },
+  { name: "Ram Paidi", distance: "1.2 KM" },
+  { name: "Saryu River", distance: "1.2 KM" },
+];
+
 export function LocationSection() {
   const mapsUrl = getGoogleMapsUrl();
   const embedQuery = encodeURIComponent(hotelConfig.address);
@@ -19,6 +29,18 @@ export function LocationSection() {
           <div className="mt-6 rounded-xl border border-stone bg-white p-5">
             <span className="eyebrow text-gold">Address</span>
             <p className="mt-2 font-display text-lg text-charcoal">{hotelConfig.address}</p>
+          </div>
+
+          <div className="mt-6 rounded-xl border border-stone bg-white p-5">
+            <span className="eyebrow text-gold">Places to Visit &amp; Distance from the Hotel</span>
+            <ul className="mt-3 divide-y divide-stone">
+              {NEARBY_PLACES.map((place) => (
+                <li key={place.name} className="flex items-center justify-between py-2 text-sm">
+                  <span className="text-charcoal">{place.name}</span>
+                  <span className="font-label text-maroon">{place.distance}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <a
