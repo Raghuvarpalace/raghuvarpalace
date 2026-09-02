@@ -10,7 +10,7 @@ import { getHotelSettings } from "@/lib/data";
 
 const title = "Hotel Raghuvar Residency | Premium Stay in Ayodhya";
 const description =
-  "Hotel Raghuvar Residency offers a premium and comfortable stay in Ayodhya, near Ramsewak Puram, Ramghat, Ayodhya — ideal for pilgrims, families, couples and travellers exploring Ayodhya.";
+  "Hotel Raghuvar Residency offers a premium and comfortable stay in Ayodhya, near Ramsewak Puram, Ramghat, Ayodhya — ideal for pilgrims, families and travellers exploring Ayodhya.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(hotelConfig.siteUrl),
