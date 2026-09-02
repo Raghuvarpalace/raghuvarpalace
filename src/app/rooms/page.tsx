@@ -6,7 +6,7 @@ import { getRooms } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Rooms",
   description:
-    "Browse rooms at Hotel Raghuvar Residency, Ayodhya — comfortable accommodation for pilgrims, families, couples and travellers.",
+    "Browse rooms at Hotel Raghuvar Residency, Ayodhya — comfortable accommodation for pilgrims, families and travellers.",
   alternates: { canonical: "/rooms" },
 };
 
