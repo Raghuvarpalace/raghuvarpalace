@@ -7,7 +7,11 @@ const HIGHLIGHTS = [
   },
   {
     title: "Comfortable Stay",
-    description: "Designed for relaxing after a day of exploring Ayodhya.",
+    description: "Premium mattresses and fresh, clean linen for a restful sleep.",
+  },
+  {
+    title: "Peaceful Vibe",
+    description: "A quiet atmosphere ensuring a relaxing retreat after a tiring day of exploring.",
   },
   {
     title: "Family Friendly",
@@ -30,7 +34,7 @@ export function Highlights() {
           className="mx-auto"
         />
 
-        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-stone rounded-2xl overflow-hidden">
+        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-stone rounded-2xl overflow-hidden">
           {HIGHLIGHTS.map((item) => (
             <div key={item.title} className="bg-ivory p-8">
               <h3 className="font-display text-lg text-maroon">{item.title}</h3>
@@ -43,3 +47,4 @@ export function Highlights() {
   );
 }
 
+      
