@@ -17,7 +17,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="About Us"
             title="Hotel Raghuvar Residency, Ayodhya"
-            description={`${hotelConfig.name} offers a premium and comfortable stay in the heart of Ayodhya, designed for pilgrims, families, couples, tourists and business travellers alike.`}
+            description={`${hotelConfig.name} offers a premium and comfortable stay in the heart of Ayodhya, designed for pilgrims, families, tourists and business travellers alike.`}
           />
           <div className="mt-6 space-y-4 text-sm leading-relaxed text-charcoal-soft">
             <p>
