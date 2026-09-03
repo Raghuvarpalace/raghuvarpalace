@@ -10,6 +10,8 @@ const NEARBY_PLACES = [
   { name: "Lata Chowk / Veena Chowk", distance: "1 KM" },
   { name: "Ram Paidi", distance: "1.2 KM" },
   { name: "Saryu River", distance: "1.2 KM" },
+  { name: "Ayodhya Dham Railway Station", distance: "1.8 KM" },
+  { name: "Maharishi Valmiki International Airport", distance: "10 KM" },
 ];
 
 export function LocationSection() {
