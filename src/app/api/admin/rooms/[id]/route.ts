@@ -30,6 +30,12 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   if (body.price !== undefined) {
     updates.price = body.price === null || (body.price as unknown as string) === "" ? null : Number(body.price);
   }
+  if (body.extra_child_charge !== undefined) {
+    updates.extra_child_charge =
+      body.extra_child_charge === null || (body.extra_child_charge as unknown as string) === ""
+        ? null
+        : Number(body.extra_child_charge);
+  }
   if (body.max_guests !== undefined) updates.max_guests = Number(body.max_guests) || 1;
   if (body.amenities !== undefined) updates.amenities = Array.isArray(body.amenities) ? body.amenities : [];
 
@@ -53,3 +59,4 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   return NextResponse.json({ ok: true });
 }
 
+  
