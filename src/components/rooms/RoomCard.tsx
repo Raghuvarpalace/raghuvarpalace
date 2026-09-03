@@ -26,6 +26,12 @@ export function RoomCard({ room }: { room: Room }) {
 
         <p className="mt-2 text-sm text-charcoal-soft leading-relaxed">{room.short_description}</p>
 
+        {room.extra_child_charge ? (
+          <p className="mt-1 text-xs text-charcoal-soft font-label">
+            +₹{room.extra_child_charge.toLocaleString("en-IN")} extra per child
+          </p>
+        ) : null}
+
         <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-charcoal-soft font-label">
           <span>{room.max_guests} Guests</span>
           <span>•</span>
