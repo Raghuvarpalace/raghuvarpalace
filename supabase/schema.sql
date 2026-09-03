@@ -21,9 +21,13 @@ create table if not exists public.rooms (
   amenities         text[] not null default '{}',
   featured_image    text,
   is_active         boolean not null default true,
+  extra_child_charge numeric(10, 2),            -- extra charge per child (e.g. 349), null/0 => not applicable
   created_at        timestamptz not null default now(),
   updated_at        timestamptz not null default now()
 );
+
+-- Safe to re-run even if the table already existed without this column.
+alter table public.rooms add column if not exists extra_child_charge numeric(10, 2);
 
 create index if not exists rooms_is_active_idx on public.rooms (is_active);
 create index if not exists rooms_slug_idx on public.rooms (slug);
