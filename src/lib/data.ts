@@ -32,11 +32,19 @@ export async function getRooms(): Promise<{ rooms: Room[]; isDemo: boolean }> {
 }
 
 export async function getRoomBySlug(
-  slug: string,
+  slugParam: string,
 ): Promise<{ room: Room | null; isDemo: boolean }> {
+  // Room links are built from `room.slug` and admin-entered slugs can
+  // pick up stray whitespace or inconsistent casing from copy/paste, so
+  // normalise before matching or a perfectly valid room silently 404s.
+  const slug = decodeURIComponent(slugParam).trim();
+
   const supabase = getSupabaseServerClient();
   if (!supabase) {
-    return { room: demoRooms.find((r) => r.slug === slug) ?? null, isDemo: true };
+    return {
+      room: demoRooms.find((r) => r.slug.toLowerCase() === slug.toLowerCase()) ?? null,
+      isDemo: true,
+    };
   }
 
   const { data, error } = await supabase
@@ -46,10 +54,28 @@ export async function getRoomBySlug(
     .eq("is_active", true)
     .maybeSingle();
 
-  if (error || !data) {
-    return { room: demoRooms.find((r) => r.slug === slug) ?? null, isDemo: true };
+  if (!error && data) {
+    return { room: data as Room, isDemo: false };
   }
-  return { room: data as Room, isDemo: false };
+
+  // Exact match failed — fall back to a case-insensitive lookup before
+  // giving up, so a slug saved as "Deluxe-Room" still resolves for a
+  // link generated as "deluxe-room" (or vice versa).
+  const { data: ciData, error: ciError } = await supabase
+    .from("rooms")
+    .select("*")
+    .ilike("slug", slug)
+    .eq("is_active", true)
+    .maybeSingle();
+
+  if (!ciError && ciData) {
+    return { room: ciData as Room, isDemo: false };
+  }
+
+  return {
+    room: demoRooms.find((r) => r.slug.toLowerCase() === slug.toLowerCase()) ?? null,
+    isDemo: true,
+  };
 }
 
 /**
@@ -147,3 +173,4 @@ export async function getAttractions(): Promise<{ items: Attraction[]; isDemo: b
   return { items: data as Attraction[], isDemo: false };
 }
 
+      
