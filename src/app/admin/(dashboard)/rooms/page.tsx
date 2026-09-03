@@ -15,6 +15,7 @@ type RoomForm = {
   bed_type: string;
   amenities: string;
   featured_image: string;
+  extra_child_charge: string;
   is_active: boolean;
 };
 
@@ -28,6 +29,7 @@ const EMPTY_FORM: RoomForm = {
   bed_type: "",
   amenities: "",
   featured_image: "",
+  extra_child_charge: "",
   is_active: true,
 };
 
@@ -79,6 +81,7 @@ export default function AdminRoomsPage() {
       bed_type: room.bed_type || "",
       amenities: (room.amenities || []).join(", "),
       featured_image: room.featured_image || "",
+      extra_child_charge: room.extra_child_charge === null || room.extra_child_charge === undefined ? "" : String(room.extra_child_charge),
       is_active: room.is_active,
     });
     setEditingId(room.id);
@@ -100,6 +103,7 @@ export default function AdminRoomsPage() {
         .map((a) => a.trim())
         .filter(Boolean),
       featured_image: form.featured_image || null,
+      extra_child_charge: form.extra_child_charge.trim() === "" ? null : Number(form.extra_child_charge),
       is_active: form.is_active,
     };
 
@@ -196,6 +200,16 @@ export default function AdminRoomsPage() {
                 onChange={(e) => setForm((f) => ({ ...f, bed_type: e.target.value }))}
               />
             </Field>
+            <Field label="Extra child charge (₹ per night, leave blank if not applicable)">
+              <input
+                className="input"
+                type="number"
+                min={0}
+                placeholder="e.g. 349"
+                value={form.extra_child_charge}
+                onChange={(e) => setForm((f) => ({ ...f, extra_child_charge: e.target.value }))}
+              />
+            </Field>
           </div>
 
           <ImageUploadField
@@ -275,6 +289,7 @@ export default function AdminRoomsPage() {
                 </p>
                 <p className="text-xs text-charcoal-soft mt-0.5">
                   /{room.slug} · {room.price ? `₹${room.price}` : "Price on request"} · {room.max_guests} guests
+                  {room.extra_child_charge ? ` · +₹${room.extra_child_charge}/child` : ""}
                 </p>
               </div>
               <div className="flex gap-3 shrink-0">
