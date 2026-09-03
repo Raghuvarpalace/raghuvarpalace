@@ -3,6 +3,14 @@ import { revalidatePath } from "next/cache";
 import { requireAdminSupabase } from "@/lib/admin-api-helpers";
 import type { Room } from "@/lib/types";
 
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const { supabase, errorResponse } = requireAdminSupabase();
@@ -26,6 +34,12 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     "is_active",
   ] as const) {
     if (body[key] !== undefined) updates[key] = body[key];
+  }
+  // Same normalisation as create — an edited slug must stay URL-safe or
+  // the room card's link stops matching this row and 404s.
+  if (typeof updates.slug === "string") {
+    const cleaned = slugify(updates.slug);
+    updates.slug = cleaned || slugify(String(body.name ?? ""));
   }
   if (body.price !== undefined) {
     updates.price = body.price === null || (body.price as unknown as string) === "" ? null : Number(body.price);
@@ -59,4 +73,4 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   return NextResponse.json({ ok: true });
 }
 
-  
+
