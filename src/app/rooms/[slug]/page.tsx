@@ -61,6 +61,11 @@ export default async function RoomDetailPage({
             <span className="eyebrow text-gold">Room</span>
             <h1 className="mt-2 font-display text-3xl md:text-4xl text-charcoal">{room.name}</h1>
             <p className="mt-3 text-lg font-label text-maroon">{formatPrice(room.price)}</p>
+            {room.extra_child_charge ? (
+              <p className="mt-1 text-xs font-label text-charcoal-soft">
+                +₹{room.extra_child_charge.toLocaleString("en-IN")} extra per child, per night
+              </p>
+            ) : null}
 
             <p className="mt-6 text-sm leading-relaxed text-charcoal-soft">{room.description}</p>
 
