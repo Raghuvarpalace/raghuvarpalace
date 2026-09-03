@@ -13,6 +13,7 @@ export interface Room {
   amenities: string[];
   featured_image: string | null;
   is_active: boolean;
+  extra_child_charge: number | null; // extra charge per child, e.g. 349. null/0 => not applicable
   created_at: string;
   updated_at: string;
 }
