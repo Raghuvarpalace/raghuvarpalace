@@ -46,6 +46,12 @@ export async function POST(request: Request) {
       bed_type: String(body.bed_type || ""),
       amenities: Array.isArray(body.amenities) ? body.amenities : [],
       featured_image: body.featured_image ? String(body.featured_image) : null,
+      extra_child_charge:
+        body.extra_child_charge === null ||
+        body.extra_child_charge === undefined ||
+        (body.extra_child_charge as unknown as string) === ""
+          ? null
+          : Number(body.extra_child_charge),
       is_active: body.is_active ?? true,
     })
     .select()
