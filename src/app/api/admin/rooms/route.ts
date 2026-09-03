@@ -3,9 +3,21 @@ import { revalidatePath } from "next/cache";
 import { requireAdminSupabase } from "@/lib/admin-api-helpers";
 import type { Room } from "@/lib/types";
 
-function revalidateRoomPages() {
+function revalidateRoomPages(slug?: string) {
   revalidatePath("/");
   revalidatePath("/rooms");
+  // Without this, a newly created room's own detail page never gets
+  // revalidated, so its "View Details" link can serve a stale 404 until
+  // the next unrelated deploy or the 300s ISR window rolls over.
+  if (slug) revalidatePath(`/rooms/${slug}`);
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
 
 export async function GET() {
@@ -29,7 +41,12 @@ export async function POST(request: Request) {
   }
 
   const name = String(body.name || "").trim();
-  const slug = String(body.slug || "").trim();
+  // Always run the slug through slugify(), even when the admin typed
+  // one manually — a raw "Deluxe Room" (with a space/uppercase) saved
+  // as-is previously produced a working but fragile URL; normalising
+  // here guarantees the link on the room card always matches a row.
+  const rawSlug = String(body.slug || "").trim();
+  const slug = slugify(rawSlug || name);
   if (!name || !slug) {
     return NextResponse.json({ error: "Name and slug are required." }, { status: 400 });
   }
@@ -58,7 +75,8 @@ export async function POST(request: Request) {
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  revalidateRoomPages();
+  revalidateRoomPages(slug);
   return NextResponse.json({ room: data as Room }, { status: 201 });
 }
 
+                       
