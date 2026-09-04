@@ -31,18 +31,35 @@ export async function getRooms(): Promise<{ rooms: Room[]; isDemo: boolean }> {
   return { rooms: data as Room[], isDemo: false };
 }
 
+// Strips everything except letters/numbers and lowercases what's left, so
+// "Double Deluxe Room", "double-deluxe-room" and "double_deluxe_room" all
+// collapse to the same key. Used only as a last-resort matcher below.
+function normaliseSlugKey(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
 export async function getRoomBySlug(
   slugParam: string,
 ): Promise<{ room: Room | null; isDemo: boolean }> {
   // Room links are built from `room.slug` and admin-entered slugs can
   // pick up stray whitespace or inconsistent casing from copy/paste, so
   // normalise before matching or a perfectly valid room silently 404s.
-  const slug = decodeURIComponent(slugParam).trim();
+  let slug = slugParam.trim();
+  try {
+    slug = decodeURIComponent(slug).trim();
+  } catch {
+    // Malformed percent-encoding (e.g. a stray "%" in the slug) — fall
+    // back to the raw, un-decoded value instead of throwing and turning
+    // a fixable mismatch into a hard 500.
+  }
 
   const supabase = getSupabaseServerClient();
   if (!supabase) {
     return {
-      room: demoRooms.find((r) => r.slug.toLowerCase() === slug.toLowerCase()) ?? null,
+      room:
+        demoRooms.find((r) => r.slug.toLowerCase() === slug.toLowerCase()) ??
+        demoRooms.find((r) => normaliseSlugKey(r.slug) === normaliseSlugKey(slug)) ??
+        null,
       isDemo: true,
     };
   }
@@ -72,8 +89,29 @@ export async function getRoomBySlug(
     return { room: ciData as Room, isDemo: false };
   }
 
+  // Still nothing — this usually means the row's slug was typed straight
+  // into Supabase (or edited before the admin form's auto-slugify was in
+  // place) and still has spaces/underscores/punctuation in it, e.g.
+  // "Double Deluxe Room" stored while every link on the site points to
+  // "double-deluxe-room". Pull the active rooms and compare with all
+  // non-alphanumeric characters stripped out so formatting differences
+  // like that no longer 404 a real, active room.
+  const { data: allActive, error: allError } = await supabase
+    .from("rooms")
+    .select("*")
+    .eq("is_active", true);
+
+  if (!allError && allActive) {
+    const key = normaliseSlugKey(slug);
+    const match = (allActive as Room[]).find((r) => normaliseSlugKey(r.slug) === key);
+    if (match) return { room: match, isDemo: false };
+  }
+
   return {
-    room: demoRooms.find((r) => r.slug.toLowerCase() === slug.toLowerCase()) ?? null,
+    room:
+      demoRooms.find((r) => r.slug.toLowerCase() === slug.toLowerCase()) ??
+      demoRooms.find((r) => normaliseSlugKey(r.slug) === normaliseSlugKey(slug)) ??
+      null,
     isDemo: true,
   };
 }
@@ -171,6 +209,4 @@ export async function getAttractions(): Promise<{ items: Attraction[]; isDemo: b
     return { items: ayodhyaAttractions, isDemo: true };
   }
   return { items: data as Attraction[], isDemo: false };
-}
-
-      
+    }
