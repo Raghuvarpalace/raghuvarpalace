@@ -112,11 +112,15 @@ export const demoGallery: GalleryItem[] = [
 export const demoTestimonials: Testimonial[] = [];
 
 // Distances/travel times are intentionally omitted — do not invent them.
+// Image URLs are left null on purpose: real, licensed photos for each place
+// should be uploaded via Admin → Discover Ayodhya (Photo field), not linked
+// from third-party websites.
 export const ayodhyaAttractions: Attraction[] = [
   {
     id: "demo-a1",
-    name: "Shri Ram Janmabhoomi",
-    description: "One of Ayodhya's most significant spiritual landmarks.",
+    name: "Shri Ram Janmabhoomi Mandir",
+    description:
+      "The sacred site revered as Lord Ram's birthplace, home to the newly consecrated Ram Mandir with its magnificent carvings and the Ram Darbar — Ayodhya's most iconic stop.",
     image_url: null,
     sort_order: 1,
     is_active: true,
@@ -125,7 +129,8 @@ export const ayodhyaAttractions: Attraction[] = [
   {
     id: "demo-a2",
     name: "Hanuman Garhi",
-    description: "A prominent temple and a common stop for visiting pilgrims.",
+    description:
+      "A fort-like temple reached by 76 steps, dedicated to Lord Hanuman. Tradition holds it is the first shrine every pilgrim visits before Ram Janmabhoomi.",
     image_url: null,
     sort_order: 2,
     is_active: true,
@@ -133,8 +138,9 @@ export const ayodhyaAttractions: Attraction[] = [
   },
   {
     id: "demo-a3",
-    name: "Saryu River / Saryu Ghat",
-    description: "The ghats along the Saryu are central to Ayodhya's spiritual life.",
+    name: "Kanak Bhawan",
+    description:
+      "Known as the 'golden palace', this temple is believed to have been gifted to Sita as her royal residence and is admired for its ornate, gilded interiors.",
     image_url: null,
     sort_order: 3,
     is_active: true,
@@ -142,11 +148,93 @@ export const ayodhyaAttractions: Attraction[] = [
   },
   {
     id: "demo-a4",
-    name: "Kanak Bhawan",
-    description: "A temple known for its architecture, popular with visitors.",
+    name: "Nageshwarnath Temple",
+    description:
+      "An ancient Shiva temple traditionally said to have been established by Kush, son of Lord Ram, drawing large crowds during Shivratri and Kartik Purnima.",
     image_url: null,
     sort_order: 4,
     is_active: true,
     created_at: new Date().toISOString(),
   },
+  {
+    id: "demo-a5",
+    name: "Dashrath Mahal",
+    description:
+      "Believed to be the royal residence of King Dashrath, Lord Ram's father. Also called Bada Asthan, it houses shrines of the Ram Parivar amid vibrant murals.",
+    image_url: null,
+    sort_order: 5,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo-a6",
+    name: "Sita Ki Rasoi",
+    description:
+      "A revered site near Ram Janmabhoomi believed to be Goddess Sita's kitchen, preserving old cooking vessels as a symbol of devotion and domestic harmony.",
+    image_url: null,
+    sort_order: 6,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo-a7",
+    name: "Treta Ke Thakur",
+    description:
+      "An ancient temple said to mark the spot of Lord Ram's Ashwamedha Yagya, home to centuries-old black stone idols of Ram, Sita, Lakshman, Bharat and Shatrughna.",
+    image_url: null,
+    sort_order: 7,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo-a8",
+    name: "Ram Ki Paidi (Saryu Ghat)",
+    description:
+      "A beautifully lit series of ghats along the Saryu River where pilgrims take a holy dip and gather each evening for the riverside aarti.",
+    image_url: null,
+    sort_order: 8,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo-a9",
+    name: "Guptar Ghat",
+    description:
+      "A tranquil ghat on the Saryu, traditionally believed to be where Lord Ram took jal samadhi — a peaceful spot for reflection and riverside sunsets.",
+    image_url: null,
+    sort_order: 9,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo-a10",
+    name: "Mani Parvat",
+    description:
+      "A historic hillock linked to the Ramayana and, by tradition, to Emperor Ashoka, offering a quiet walk and a wide view over the city.",
+    image_url: null,
+    sort_order: 10,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo-a11",
+    name: "Tulsi Smarak Bhawan",
+    description:
+      "A memorial to the saint-poet Goswami Tulsidas, built on the spot where he is believed to have composed the Ramcharitmanas.",
+    image_url: null,
+    sort_order: 11,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo-a12",
+    name: "Chhoti Devkali Mandir",
+    description:
+      "A quieter, less-crowded temple dedicated to the Goddess, considered Sita's kuldevi (family deity), known for its calm and unhurried darshan.",
+    image_url: null,
+    sort_order: 12,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
 ];
+    
